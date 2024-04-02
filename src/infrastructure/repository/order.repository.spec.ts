@@ -172,39 +172,7 @@ describe("Order repository test", () => {
         expect(foundOrder).toStrictEqual(orders);
     });
 
-    it("shouldn't update an order", async () => {
-        const customerRepository = new CustomerRepository();
-        const customer = new Customer("123", "Customer 1");
-        const address = new Address("Street 1", 123, "Zipcode 1", "City 1");
-
-        customer.Address = address;
-        await customerRepository.create(customer);
-
-        const productRepository = new ProductRepository();
-        const product = new Product("123", "Product 1", 10);
-        await productRepository.create(product);
-
-        const ordemItem = new OrderItem(
-            "1",
-            product.name,
-            product.price,
-            product.id,
-            2,
-        );
-
-        const order = new Order("123", "123", [ordemItem]);
-
-        const orderRepository = new OrderRepository();
-        await orderRepository.create(order);
-
-        const foundOrder = await orderRepository.find("123");
-
-        expect(async () => {
-            let updatedOrder = await orderRepository.update(order);
-        }).rejects.toThrow("Order cannot be updated");
-    });
-
-    it("should add a new item to an order", async () => {
+    it("should update an order", async () => {
         const customerRepository = new CustomerRepository();
         const customer = new Customer("123", "Customer 1");
         const address = new Address("Street 1", 123, "Zipcode 1", "City 1");
@@ -224,7 +192,7 @@ describe("Order repository test", () => {
             2,
         );
 
-        const order = new Order("123", "123", [ordemItem1]);
+        let order = new Order("123", "123", [ordemItem1]);
 
         const orderRepository = new OrderRepository();
         await orderRepository.create(order);
@@ -258,11 +226,15 @@ describe("Order repository test", () => {
             3,
         );
 
-        const increateItem = await orderRepository.increaseItemInOrder(ordemItem2, order.id);
+        order.items.push(ordemItem2);
+
+        const updateOrder = await orderRepository.update(order);
         const orderResult = await OrderModel.findOne({
             where: { id: order.id },
             include: ["items"],
         });
+
+        console.log(orderResult.toJSON());
 
         expect(orderResult.toJSON()).toStrictEqual({
             id: "123",
@@ -287,8 +259,6 @@ describe("Order repository test", () => {
                 },
             ]
         });
-
-
     });
 
 });
