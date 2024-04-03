@@ -234,8 +234,6 @@ describe("Order repository test", () => {
             include: ["items"],
         });
 
-        console.log(orderResult.toJSON());
-
         expect(orderResult.toJSON()).toStrictEqual({
             id: "123",
             customer_id: "123",
