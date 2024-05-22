@@ -4,6 +4,7 @@ import ProductRepository from "../../../infrastructure/products/repository/seque
 import ProductFactory from "../../../domain/product/factory/product.factory";
 import FindProductUseCase from "./find.product.usecase";
 import Product from "../../../domain/product/entity/product";
+import CreateProductUseCase from "../create/create.product.usecase";
 
 describe("Test find a product", () => {
     let sequelize: Sequelize;
@@ -27,14 +28,16 @@ describe("Test find a product", () => {
 
     it("should return a product", async () => {
         const productRepository = new ProductRepository();
-        const product = ProductFactory.create("a", "Product Test", 10);
+        const usecaseCreateProduct = new CreateProductUseCase(productRepository);
+        // const product = ProductFactory.create("a", "Product Test", 10);
+        const product = await usecaseCreateProduct.execute({type: "a", name: "Product Test", price:10, id: '123'});
         const verifyProduct = {
             id: product.id,
             name: product.name,
             price: product.price,
         }
 
-        await productRepository.create(product as Product);
+        // await productRepository.create(product as Product);
 
         const usecase = new FindProductUseCase(productRepository);
 

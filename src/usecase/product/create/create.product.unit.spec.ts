@@ -24,7 +24,7 @@ describe("Unit teste create a product", () => {
 
         const output = await useCase.execute(product);
 
-        expect(output.id).toEqual(product.id);
+        expect(output.id).toBeDefined();
         expect(output.name).toEqual(product.name);
         expect(output.price).toEqual(product.price);
     });

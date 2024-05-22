@@ -40,7 +40,7 @@ describe("Teste integratrion created product", () => {
 
         const output = await useCase.execute(input);
 
-        expect(output.id).toEqual(product.id);
+        expect(output.id).toBeDefined();
         expect(output.name).toEqual(product.name);
         expect(output.price).toEqual(product.price);
 
