@@ -59,7 +59,7 @@ describe("Teste integratrion created product", () => {
 
         const useCase = new CreateProductUseCase(repository);
 
-        expect(useCase.execute(input)).rejects.toThrow("Price must be greater thean zaro");
+        expect(useCase.execute(input)).rejects.toThrow("product: Price must be greater thean zero");
 
     });
 
